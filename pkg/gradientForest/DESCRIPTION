@@ -1,6 +1,6 @@
 Package: gradientForest
 Type: Package
-Version: 0.1-19
+Version: 0.1-20
 Date: 2021-03-31
 Title: Random Forest functions for the Census of Marine Life synthesis project.
 Author: S.J. Smith <Stephen.Smith@dfo-mpo.gc.ca> and N. Ellis <Nick.Ellis@csiro.au>
