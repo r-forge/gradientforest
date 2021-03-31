@@ -86,7 +86,7 @@ function (object, newdata, extrap=TRUE, ...)
           lower_extrap <- newdata[,varX] < xold[1]
           if(length(lower_extrap) > 0){
             lower_norm <- (newdata[lower_extrap, varX] - min(xold)) / (max(xold) - min(xold))
-            extrap_norm <- - compressextrap(-lower_norm, as.numeric(extrap), grad_norm, -yold[1])
+            extrap_norm <- - compress.extrap(-lower_norm, as.numeric(extrap), grad_norm, -yold[1])
             out[lower_extrap, varX] <- extrap_norm
           }
           break
