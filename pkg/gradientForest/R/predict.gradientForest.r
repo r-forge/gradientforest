@@ -1,26 +1,6 @@
 `predict.gradientForest` <-
 function (object, newdata, extrap=TRUE, ...)
 {
-  compress_extrap_z <- function(x, p, a, b){
-
-    assertthat::assert_that(p >=0, p<=1)
-    assertthat::assert_that(a >=0)
-    assertthat::assert_that(all(x >= 0))
-
-    if(p == 1){
-      ##linear extrapolation
-      z <- a * x + b
-    } else if (a == 0 | p == 0){
-      ##capping
-      z <- b
-    } else {
-      ##curve, x^p + b, with x and intercept shifted such that dz/dx = a at x = 0
-      z <- (x + (a / p) ^ (1/(p-1)) ) ^ p + b - (a / p) ^ (p / (p-1))
-    }
-
-    return(z)
-  }
-  ## refactor
   ## extrap can be
   ## NA - return NA's
   ## T - extrap linearly
@@ -89,16 +69,25 @@ function (object, newdata, extrap=TRUE, ...)
           yold <- range(ci$y)
           if(xold[1] == xold[2]) stop(paste0("variable [", varX, "] has badly formed cumulative importance curve:\n ", ci))
           grad <- diff(yold) / diff(xold)
+          ## xold_norm <- (xold - min(xold)) / max(xold - min(xold))
+          grad_norm <- diff(yold)
 
           ##compression algorithm only works on one side at a time.
           upper_extrap <- newdata[,varX] > xold[2]
           if(length(upper_extrap) > 0){
-            out[upper_extrap, varX] <- compress_extrap_z(newdata[upper_extrap, varX] - xold[2], as.numeric(extrap), grad, yold[2])
+            ## When extrapolating, normalise x st. min(xold) == 0 and max(xold) == 1
+
+            upper_norm <- (newdata[upper_extrap, varX] - min(xold)) / (max(xold) - min(xold))
+
+            extrap_norm <- compress.extrap(upper_norm - 1, as.numeric(extrap), grad_norm, yold[2])
+            out[upper_extrap, varX] <- extrap_norm
           }
 
           lower_extrap <- newdata[,varX] < xold[1]
           if(length(lower_extrap) > 0){
-            out[lower_extrap, varX] <- - compress_extrap_z(xold[1] - newdata[lower_extrap, varX], as.numeric(extrap), grad, -yold[1])
+            lower_norm <- (newdata[lower_extrap, varX] - min(xold)) / (max(xold) - min(xold))
+            extrap_norm <- - compressextrap(-lower_norm, as.numeric(extrap), grad_norm, -yold[1])
+            out[lower_extrap, varX] <- extrap_norm
           }
           break
         }
