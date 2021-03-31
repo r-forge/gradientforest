@@ -22,8 +22,24 @@ An optional data frame in which to look for variables with which to predict.
 If omitted, the environmental variables at the sites in \code{object$X} are used.
 }
   \item{extrap}{
-if \code{TRUE} use linear extrapolation for predictor values outside the range of the 
-original site data, otherwise limit to the range of of the site data.
+Controls extrapolation to predictor values outside the range of the
+original site data.
+
+CAUTION: Extrapolation is an experimental feature. No studies have been
+done to determine what kinds of extrapolation are meaningful.
+Extrapolation is provided as a convenience to the user who wants
+extrapolation anyway, and is willing to experiment with their dataset
+to find useful extrapolation levels.
+
+\item{\code{NA}} returns NA for any extrapolated point.
+
+\item{\code{TRUE}} use linear extrapolation.
+
+\item{\code{FALSE}} predictor values outside the range of the original site
+data are set to the limits of the original site data.
+
+\item{\code{0 <= extrap <= 1}} extrapolate with compression. See details.
+
 }
   \item{\dots}{
     further arguments passed to \code{cumimp}. 
@@ -38,14 +54,31 @@ associated with the predictors. These inferred compositional patterns can be map
 biological space and geographic space in a manner analogous to ordination, that takes into account
 the non-linear and sometimes threshold changes that occur along gradients.
 
+
 Where environmental values lie outside the range of the original site data, by default extrapolation 
-is performed. That is, if \code{(xmin,xmax)} are the range of the site predictors with corresponding
+is performed.
+
+CAUTION: Extrapolation is an experimental feature. No studies have been
+done to determine what kinds of extrapolation are meaningful.
+Extrapolation is provided as a convenience to the user who wants
+extrapolation anyway, and is willing to experiment with their dataset
+to find useful extrapolation levels.
+
+If \code{(xmin,xmax)} are the range of the site predictors with corresponding
 cumulative importance values \code{(ymin,ymax)}, the prediction \code{y} at a new environmental value 
 outside the range \code{(xmin,xmax)} is \code{ymin + (y-ymin)*(x-xmin)/(xmax-xmin)}.
 This is equivalent to assigning the average importance inside \code{(xmin,xmax)} to all values
 outside the range. If \code{extrap=FALSE}, linear extrapolation is not performed; instead predictions
 below \code{xmin} are fixed at \code{ymin} and predictions above \code{xmax} are fixed at \code{ymax}.
-This is equivalent to assigning zero importance outside the range of the site data. 
+This is equivalent to assigning zero importance outside the range of the
+site data. If \code{0 <= extrap <= 1}, then extrapolation is compressed
+by \code{((x - xmax) * (ymax-ymin)/(xmax-xmin))^extrap} with some
+offsets applied to keep the extrapolation below linear extrapolation at
+all times. A similar transformation is applied to new environmental
+values below \code{xmin}. Values of \code{extrap} close to 1 approach
+linear extrapolation, and values close to 0 approach fixing predictions
+at \code{ymax}.
+
 }
 \value{
 an object of class \code{predict.gradientForest}. It is a dataframe in which each predictor 
