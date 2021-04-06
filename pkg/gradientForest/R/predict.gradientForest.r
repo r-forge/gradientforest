@@ -89,9 +89,7 @@ function (object, newdata, extrap=TRUE, ...)
             extrap_norm <- - compress.extrap(-lower_norm, as.numeric(extrap), grad_norm, -yold[1])
             out[lower_extrap, varX] <- extrap_norm
           }
-          break
         }
-        break
       }
       ##end the loop here
     }
