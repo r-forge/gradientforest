@@ -31,15 +31,17 @@ Extrapolation is provided as a convenience to the user who wants
 extrapolation anyway, and is willing to experiment with their dataset
 to find useful extrapolation levels.
 
-\item{\code{NA}} returns NA for any extrapolated point.
+  \itemize{
+    \item \code{extrap = NA}: returns NA for any extrapolated point.
 
-\item{\code{TRUE}} use linear extrapolation.
+    \item \code{extrap = TRUE}: use linear extrapolation.
 
-\item{\code{FALSE}} predictor values outside the range of the original site
-data are set to the limits of the original site data.
+    \item\code{extrap = FALSE}: predictor values outside the range of the original site
+    data are set to the limits of the original site data.
 
-\item{\code{0 <= extrap <= 1}} extrapolate with compression. See details.
-
+    \item \code{extrap} is a number in the range [0,1]: extrapolate with
+    compression. See details.
+  }
 }
   \item{\dots}{
     further arguments passed to \code{cumimp}. 
