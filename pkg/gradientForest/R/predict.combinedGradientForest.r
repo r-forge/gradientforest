@@ -43,13 +43,11 @@ function (object, newdata, extrap=TRUE, ...)
           known <- newdata[,varX] == ci$x
           out[known,varX] <- ci$y
           out[!known, varX] <- NA
-          break ##break should be redundant, but makes it clear we are done for this variable
         } else {
           ##only one observation, constant everywhere
           ## linear extrapolation and capping give the same result when gradient is 0,
           ##compression is bounded by linear extrapolation and capping, so will also be constant everywhere
           out[,varX] <- ci$y
-          break
         }
       } else {
         f <- approxfun(ci, rule = 1)
