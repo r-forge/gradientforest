@@ -11,7 +11,7 @@
       ok <- apply(ok, 2, all)
     }
   	tmp <- do.call("rbind", lapply((1:fit$ntree)[ok], function(k) cbind(tree = k, trees[[k]])))
-    tmp <- tmp[tmp[,"status"]== 1 & zapsmall(tmp[,"improve"]) > 0,c("split var","split point","improve")]
+    tmp <- tmp[tmp[,"status"]== 1 & zapsmall(tmp[,"improve"]) > 0,c("split var","split point","improve"), drop = FALSE]
     colnames(tmp) <- c("var_n","split","improve")
     rownames(tmp) <- NULL
 

@@ -7,7 +7,7 @@
     }
     tmp <- do.call("rbind", lapply((1:fit$ntree)[ok], function(k) cbind(tree =
                                                                           k, trees[[k]])))
-    tmp <- tmp[tmp[,"status"]==-3 & zapsmall(tmp[,"improve"]) > 0,c("split var","split point","improve")]
+    tmp <- tmp[tmp[,"status"]==-3 & zapsmall(tmp[,"improve"]) > 0,c("split var","split point","improve"), drop = FALSE]
     colnames(tmp) <- c("var_n","split","improve")
     rownames(tmp)<-NULL     #S.J. Smith 11/05/2009
     res <- cbind(data.frame(var=factor(names(X)[tmp[,"var_n"]], levels = names(X)),rsq=rep(fit$rsq[fit$ntree],nrow(tmp))),tmp)
