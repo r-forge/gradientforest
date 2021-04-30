@@ -5,8 +5,8 @@ Date: 2021-04-07
 Title: Random Forest functions for the Census of Marine Life synthesis project.
 Author: S.J. Smith <Stephen.Smith@dfo-mpo.gc.ca> and N. Ellis <Nick.Ellis@csiro.au>
 Maintainer: N. Ellis <nickellis999@gmail.com>
-Depends: R (>= 2.10.0), extendedForest
-Imports: lattice
+Depends: R (>= 2.10.0)
+Imports: lattice, extendedForest
 Suggests: cluster
 Description: Analyses species data using random forests, collates the split-point improvements in impurity, and uses these to convert predictor variables into a biologically-informed importance scale. This version allows combinations of gradientForest objects with different predictors.
 License: GPL (>= 2)

@@ -10,7 +10,7 @@ export(
 )
 
 import(lattice)
-importFrom(extendedForest, importance)
+importFrom(extendedForest, importance, randomForest, getTree)
 importFrom(stats, density)
 S3method(cumimp, gradientForest)
 S3method(cumimp, combinedGradientForest)
