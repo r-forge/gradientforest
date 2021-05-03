@@ -11,6 +11,7 @@ S3method(plot, margin)
 S3method(partialPlot, randomForest)
 S3method(grow, randomForest)
 S3method(importance, randomForest)
+S3method(importance, default)
 S3method(outlier, randomForest)
 S3method(outlier, default)
 
