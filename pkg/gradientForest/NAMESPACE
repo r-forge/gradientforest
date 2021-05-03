@@ -9,7 +9,6 @@ importFrom(extendedForest, importance,
 importFrom(stats, density)
 S3method(cumimp, gradientForest)
 S3method(cumimp, combinedGradientForest)
-S3method(cumimp, default)
 S3method(density, gradientForest)
 S3method(density, combinedGradientForest)
 S3method(importance, gradientForest)
