@@ -1,6 +1,6 @@
 export(
   gradientForest, combinedGradientForest, 
-  cumimp
+  cumimp, importance
 )
 
 import(lattice)
@@ -17,8 +17,6 @@ S3method(print, gradientForest)
 S3method(print, combinedGradientForest)
 S3method(plot, gradientForest)
 S3method(plot, combinedGradientForest)
+S3method(plot, predict.gradientForest)
 S3method(predict, gradientForest)
 S3method(predict, combinedGradientForest)
-S3method(plot, predict.gradientForest)
-
-
