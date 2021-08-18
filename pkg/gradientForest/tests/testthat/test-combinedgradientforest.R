@@ -1,3 +1,4 @@
+context("Combined Gradient Forest")
 ## Combined Gradient Forest
 data(CoMLsimulation)
 preds <- colnames(Xsimulation)

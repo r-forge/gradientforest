@@ -1,3 +1,4 @@
+context("Gradient Forest")
 data(CoMLsimulation)
 preds <- colnames(Xsimulation)
 specs <- colnames(Ysimulation)
