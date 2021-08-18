@@ -8,6 +8,7 @@ Maintainer: N. Ellis <nickellis999@gmail.com>
 Depends: R (>= 2.10.0)
 Imports: lattice, extendedForest
 Suggests: cluster, testthat (>= 3.0.0}
+Config/testthat/edition: 3
 Description: Analyses species data using random forests, collates the split-point improvements in impurity, and uses these to convert predictor variables into a biologically-informed importance scale. This version allows combinations of gradientForest objects with different predictors.
 License: GPL (>= 2)
 URL: http://www.r-project.org

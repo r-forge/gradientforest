@@ -10,7 +10,7 @@ set.seed(201808)
 f12 <- combinedGradientForest(west=f1c,east=f2c)
 test_that("combinedGradientForest fits", {
   expect_snapshot_value(f12, "serialize")
-  expect_snapshop_output(print(f12))
+  expect_snapshot_output(print(f12))
 })
 
 X <- Xsimulation
@@ -27,7 +27,7 @@ set.seed(201808)
 gfc <- combinedGradientForest(west = f1c_inv, east = f2c_inv)
 test_that("combinedGradientForest fits even with invalid col names", {
   expect_snapshot_value(gfc, "serialize")
-  expect_snapshop_output(print(gfc))
+  expect_snapshot_output(print(gfc))
 })
 
 test_that("invalid col names do not change data output", {

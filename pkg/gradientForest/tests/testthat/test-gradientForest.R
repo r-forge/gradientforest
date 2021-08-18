@@ -6,9 +6,7 @@ set.seed(202108)
 f1 <- gradientForest(data.frame(Ysimulation,Xsimulation), preds, specs, ntree=10)
 test_that("gradientForest fits", {
   expect_snapshot_value(f1, "serialize")
-  expect_output(print(f1), "A forest of 10 regression trees for each of 10 species")
-  expect_output(print(f1), "Call:\\n\\ngradientForest\\(data = data\\.frame\\(Ysimulation, Xsimulation\\), predictor\\.vars = preds, \\n    response\\.vars = specs, ntree = 10\\)")
-  expect_output(print(f1), "Important variables:\\n\\[1\\] B A J D C\\n")
+  expect_snapshot_output(print(f1))
 })
 
 ## testing robustness to invalid cols
@@ -28,9 +26,7 @@ test_that("invalid names are rejected", {
 f1_invalid <- gradientForest(XY, preds_inv, specs_inv, ntree=10, check.names=FALSE)
 test_that("invalid col names can be handled", {
   expect_snapshot_value(f1_invalid, "serialize")
-  expect_output(print(f1_invalid), "A forest of 10 regression trees for each of 10 species")
-  expect_output(print(f1_invalid), "Call:\\n\\ngradientForest\\(data = XY, predictor\\.vars = preds_inv, response\\.vars = specs_inv, \\n    ntree = 10, check\\.names = FALSE\\)")
-  expect_output(print(f1_invalid), "Important variables:\\n\\[1\\] B            invalid pred J            D            C           \\n")
+  expect_snapshot_output(print(f1_invalid))
 })
 
   ## test predict
