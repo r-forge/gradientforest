@@ -1,11 +1,23 @@
 `gradientForest` <-
-function(data,predictor.vars,response.vars,ntree=10,mtry=NULL, transform=NULL,maxLevel=0,corr.threshold=0.5,compact=FALSE,nbin=101,trace=FALSE)
+function(data,predictor.vars,response.vars,ntree=10,mtry=NULL, transform=NULL,maxLevel=0,corr.threshold=0.5,compact=FALSE,nbin=101,trace=FALSE, check.names=TRUE)
 {
   #Modified 07/10/2009 by S.J. Smith for Nick Ellis' version for either
   #regression or classification trees.
 
   if(!inherits(data, "data.frame"))
     stop("'data' must be a data.frame")
+  if (check.names) {
+    validated_pred_names <- make.names(predictor.vars)
+    if(any(validated_pred_names != predictor.vars)) {
+      invalid_names <- predictor.vars[validated_pred_names != predictor.vars]
+      stop(paste0("Some predictor names are not valid column names, consider renaming with make.names(). Force use of invalid col names with check.names=FALSE. Invalid Col names: [", paste0(invalid_names, collapse = "], ["), "]. "))
+    }
+    validated_resp_names <- make.names(response.vars)
+    if(any(validated_resp_names != response.vars)) {
+      invalid_names <- response.vars[validated_resp_names != response.vars]
+      stop(paste0("Some response names are not valid column names, consider renaming with make.names().Force use of invalid col names with check.names=FALSE. Invalid Col names: [", paste0(invalid_names, collapse = "], ["), "]. "))
+    }
+  }
   X <- data[predictor.vars]
   Y <- data[response.vars]
   if (compact) {

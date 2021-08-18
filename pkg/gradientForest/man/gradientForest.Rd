@@ -10,7 +10,7 @@ This function uses the modified extendedForest package to conduct analysis on be
 }
 \usage{
 gradientForest(data,predictor.vars,response.vars,ntree=10,mtry=NULL,transform=NULL,
-maxLevel=0,corr.threshold=0.5,compact=FALSE,nbin=101,trace=FALSE)
+maxLevel=0,corr.threshold=0.5,compact=FALSE,nbin=101,trace=FALSE,check.names=TRUE)
 }
  
 \arguments{
@@ -42,7 +42,12 @@ maxLevel=0,corr.threshold=0.5,compact=FALSE,nbin=101,trace=FALSE)
     \item{compact}{logical variable to choose standard method or compact method for aggregating importance measures across species.
                     Compact=TRUE to be chosen when memory problems cause a crash in this function.  Still experimental.}
    \item{nbin}{number of bins for compact option. Default set to 101.}                  
-   \item{trace}{if \code{TRUE} show the progress. Default \code{FALSE}.}                    
+   \item{trace}{if \code{TRUE} show the progress. Default \code{FALSE}.}
+   \item{check.names}{if \code{TRUE} then ensure that all predictor and
+                    response vars are syntactically valid col names in R
+                    and throw an error if they are not. gradientForest
+                    should still work with invalid col names, but with
+                    potentially more bugs. Default \code{TRUE}.}
 
 }
 \details{
