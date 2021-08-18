@@ -19,17 +19,28 @@ function(data,predictor.vars,response.vars,ntree=10,mtry=NULL, transform=NULL,ma
   imp <- matrix(0,0,2,dimnames=list(NULL,c("%IncMSE","IncNodePurity")))
   #  fitcmd <- quote(randomForest(Species ~ rhs, data=cbind(Y,X), keep.forest=T, importance=TRUE, na.action=na.omit, keep.inbag=FALSE, ntree=ntree))
   #Conditional permutation version of rF.  Nick Ellis 22/12/2009
-  if(is.null(mtry)) fitcmd <- quote(randomForest(Species ~ rhs, data=cbind(Y,X), maxLevel=maxLevel, keep.forest=TRUE, importance=TRUE, ntree=ntree, keep.group=TRUE, keep.inbag=TRUE, corr.threshold=corr.threshold, na.action=na.omit))
-  else fitcmd <- quote(randomForest(Species ~ rhs, data=cbind(Y,X), maxLevel=maxLevel, keep.forest=TRUE, importance=TRUE, ntree=ntree, mtry=mtry, keep.group=TRUE, keep.inbag=TRUE, corr.threshold=corr.threshold, na.action=na.omit))
+  ## Convert to x, y format
+  if(is.null(mtry)) {
+    ## makes use of closures
+    fitfunc <- function(spec_vec) {
+      randomForest(x = X, y = spec_vec,  maxLevel=maxLevel, keep.forest=TRUE, importance=TRUE, ntree=ntree, keep.group=TRUE, keep.inbag=TRUE, corr.threshold=corr.threshold)
+    }
+  } else {
+    fitfunc <- function(spec_vec) {
+      randomForest(x = X, y = spec_vec,  maxLevel=maxLevel, keep.forest=TRUE, importance=TRUE, ntree=ntree, mtry=mtry, keep.group=TRUE, keep.inbag=TRUE, corr.threshold=corr.threshold)
+    }
+  }
+  ## if(is.null(mtry)) fitcmd <- quote(randomForest(Species ~ rhs, data=cbind(Y,X), maxLevel=maxLevel, keep.forest=TRUE, importance=TRUE, ntree=ntree, keep.group=TRUE, keep.inbag=TRUE, corr.threshold=corr.threshold, na.action=na.omit))
+  ## else fitcmd <- quote(randomForest(Species ~ rhs, data=cbind(Y,X), maxLevel=maxLevel, keep.forest=TRUE, importance=TRUE, ntree=ntree, mtry=mtry, keep.group=TRUE, keep.inbag=TRUE, corr.threshold=corr.threshold, na.action=na.omit))
   result <- list()
   species.pos.rsq<-0
-  form.rhs<-as.formula(paste("Y ~ ", paste(predictor.vars,collapse = "+"))) #added to replace functions makeForms and plus.  SJ Smith 25/06/2009
+  #form.rhs<-as.formula(paste("Y ~ ", paste(predictor.vars,collapse = "+"))) #added to replace functions makeForms and plus.  SJ Smith 25/06/2009
   if (trace) {spcount <- 0; cat("Calculating forests for",length(response.vars),"species\n")}
   for (spec in response.vars) {
     if (trace) cat(if((spcount <- spcount+1) %% options("width")$width == 0) "\n." else ".")
     try({
-      thisfitcmd <- do.call("substitute",list(fitcmd,list(Species=as.name(spec),SpeciesName=spec,ntree=ntree,rhs=form.rhs[[3]])))
-      fit <- eval(thisfitcmd)            
+      #thisfitcmd <- do.call("substitute",list(fitcmd,list(Species=as.name(spec),SpeciesName=spec,ntree=ntree,rhs=form.rhs[[3]])))
+      fit <- fitfunc(Y[[spec]])#eval(thisfitcmd)
       if (fit$type == "regression") {
         if(!is.na(fit$rsq[fit$ntree])) { 
           if(fit$rsq[fit$ntree] > 0) {
