@@ -1,8 +1,8 @@
 compress.extrap <- function(x, p, a, b){
 
-assertthat::assert_that(p >=0, p<=1)
-assertthat::assert_that(a >=0)
-assertthat::assert_that(all(x >= 0))
+  if(!(p >= 0 & p<=1) stop("gradientForest prediction extrap param must be in range [0,1], got [", p,"]")
+  if(!(a >= 0) stop("gradientForest prediction internal error: gradient 'a' must be positive. Got [", a,"]")
+  if(!(all(x >= 0) stop("gradientForest prediction internal error: Not all 'x' are positive, but internal algorithm requires it. Got [", x,"]")
 
 if(p == 1){
     ##linear extrapolation
