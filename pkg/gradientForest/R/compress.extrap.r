@@ -1,8 +1,8 @@
 compress.extrap <- function(x, p, a, b){
 
-  if(!(p >= 0 & p<=1) stop("gradientForest prediction extrap param must be in range [0,1], got [", p,"]")
-  if(!(a >= 0) stop("gradientForest prediction internal error: gradient 'a' must be positive. Got [", a,"]")
-  if(!(all(x >= 0) stop("gradientForest prediction internal error: Not all 'x' are positive, but internal algorithm requires it. Got [", x,"]")
+  if(!(p >= 0 & p<=1)) stop("gradientForest prediction extrap param must be in range [0,1], got [", p,"]")
+  if(!(a >= 0)) stop("gradientForest prediction internal error: gradient 'a' must be positive. Got [", a,"]")
+  if(!(all(x >= 0)) stop("gradientForest prediction internal error: Not all 'x' are positive, but internal algorithm requires it. Got [", x,"]")
 
 if(p == 1){
     ##linear extrapolation
