@@ -65,6 +65,7 @@ function(..., nbin=101, method=2, standardize=c("before","after")[1])
     imp.rsq.long <- do.call("rbind", lapply(gearnames, function(gf, fList) {
       resp.names <- colnames(fList[[gf]]$imp.rsq)
       imp.rsq.tmp <- data.frame(predictor = row.names(fList[[gf]]$imp.rsq), fList[[gf]]$imp.rsq)
+      colnames(imp.rsq.tmp)[-1] <- resp.names
       out <- stats::reshape(imp.rsq.tmp,
         idvar = "predictor",
         varying = resp.names, v.names = "imp",
