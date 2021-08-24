@@ -22,7 +22,7 @@ function(..., nbin=101, method=2, standardize=c("before","after")[1])
     nsite <- sapply(fList, function(obj) nrow(obj$X))
 #    if(!all(npred == npred[1]))
 #      stop("Every forest must have the same number of predictors")
-    prednames <- lapply(fList, function(obj) sort(unique(obj$res$var)))  # TO DO: allow for sorting
+    prednames  <- lapply(fList, function(obj) levels(obj$res$var))
     allpreds <- as.character(unique(sort(unlist(prednames))))
 #   find gradientForest objects that support each predictor
     gf.names <- lapply(namenames(allpreds), function(predictor) gearnames[sapply(prednames, is.element, el=predictor)])

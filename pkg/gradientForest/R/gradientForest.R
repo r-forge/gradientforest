@@ -20,6 +20,11 @@ function(data,predictor.vars,response.vars,ntree=10,mtry=NULL, transform=NULL,ma
   }
   X <- data[predictor.vars]
   Y <- data[response.vars]
+
+  validate_pred_vals <- sapply(predictor.vars, function(pred,x){length(unique(x[[pred]])) > 1}, x=X)
+  if (!all(validate_pred_vals)) {
+    stop(paste0("One of the predictors is constant across all sites. Please remove [", predictor.vars[!validate_pred_vals], "]"))
+  }
   if (compact) {
     bins <- do.call("cbind",lapply(X, function(x) bin(x,nbin=nbin))) #Nick Ellis 9/12/2009
   }

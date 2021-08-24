@@ -1,4 +1,3 @@
-context("Gradient Forest")
 data(CoMLsimulation)
 preds <- colnames(Xsimulation)
 specs <- colnames(Ysimulation)
@@ -77,3 +76,21 @@ if (FALSE) {
   plot(f1_invalid, "P")
   dev.off()
 }
+
+data(CoMLsimulation)
+preds <- colnames(Xsimulation)
+specs <- colnames(Ysimulation)
+Xsimulation[,1] <- 0.5
+set.seed(202108)
+test_that("uninformative predictors don't break GF", {
+  expect_snapshot_value(f1x, "serialize")
+  expect_snapshot_output(print(f1x))
+
+  expect_snapshot_value(importance(f1x), "serialize")
+  expect_snapshot_value(predict(f1x), "serialize")
+  expect_equal(cumimp(f1x, "A"), list(x=0, y= 0))
+  expect_equal(sum(f1x$res$var == "A"), 0)
+  expect_equal(levels(f1x$res$var), preds)
+  expect_equal(levels(f1x$res.u$var), preds)
+
+})

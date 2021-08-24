@@ -26,6 +26,9 @@ function (x, predictor, type=c("Overall","Species")[1], standardize=TRUE, standa
   }
      
   getCU <- function(importance.df, Rsq) {
+    if (nrow(importance.df) == 0) {
+      return( list(x=0, y=0))
+    }
     agg <- with(importance.df, agg.sum(improve.norm, list(split), sort.it=TRUE))
     cum.split <- agg[,1]
     height <- agg[,2] 

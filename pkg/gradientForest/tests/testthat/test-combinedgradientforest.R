@@ -1,4 +1,3 @@
-context("Combined Gradient Forest")
 ## Combined Gradient Forest
 data(CoMLsimulation)
 preds <- colnames(Xsimulation)
@@ -33,8 +32,8 @@ test_that("combinedGradientForest fits even with invalid col names", {
 
 test_that("invalid col names do not change data output", {
 
-  expect_true(all(predict(f12) == predict(gfc)))
-  })
+  expect_true(all(predict(f12) == predict(gfc)[,c(9, c(1:10)[-9])]))
+})
 
   ## the various plots call the following functions:
   ## importance
@@ -75,3 +74,45 @@ if (FALSE) {
   plot(gfc, "Per")
   dev.off()
 }
+
+
+data(CoMLsimulation)
+preds <- colnames(Xsimulation)
+specs <- colnames(Ysimulation)
+set.seed(201808)
+f1c <- gradientForest(data.frame(Ysimulation,Xsimulation), preds, specs[1:6], ntree=10)
+set.seed(201808)
+Xsimulation[,1] <- 0.5
+Xsimulation[1,1] <- 0.51
+f2c <- gradientForest(data.frame(Ysimulation,Xsimulation), preds, specs[1:6+6], ntree=10)
+set.seed(201808)
+f12 <- combinedGradientForest(west=f1c,east=f2c)
+test_that("combinedGradiientForest works with some unused predictors", {
+
+  expect_snapshot_value(f12, "serialize")
+  expect_snapshot_output(print(f12))
+
+  expect_snapshot_value(importance(f1x), "serialize")
+  expect_snapshot_value(predict(f1x), "serialize")
+})
+
+
+data(CoMLsimulation)
+preds <- colnames(Xsimulation)
+specs <- colnames(Ysimulation)
+Xsimulation[,1] <- 0.5
+Xsimulation[1,1] <- 0.51
+set.seed(201808)
+f1c <- gradientForest(data.frame(Ysimulation,Xsimulation), preds, specs[1:6], ntree=10)
+set.seed(201808)
+f2c <- gradientForest(data.frame(Ysimulation,Xsimulation), preds, specs[1:6+6], ntree=10)
+set.seed(201808)
+f12 <- combinedGradientForest(west=f1c,east=f2c)
+test_that("combinedGradientForest works with a universally unused predictors", {
+
+  expect_snapshot_value(f12, "serialize")
+  expect_snapshot_output(print(f12))
+
+  expect_snapshot_value(importance(f1x), "serialize")
+  expect_snapshot_value(predict(f1x), "serialize")
+})
