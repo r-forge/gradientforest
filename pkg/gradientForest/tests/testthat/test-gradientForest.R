@@ -80,8 +80,19 @@ if (FALSE) {
 data(CoMLsimulation)
 preds <- colnames(Xsimulation)
 specs <- colnames(Ysimulation)
-Xsimulation[,1] <- 0.5
+Xsimulation_constant <- Xsimulation
+Xsimulation_constant[,1] <- 0.5
 set.seed(202108)
+test_that("constant predictors cause errors", {
+  expect_error(gradientForest(data.frame(Ysimulation,Xsimulation_constant), preds, specs, ntree=10),
+               "One of the predictors is constant across all sites. Please remove \\[A\\]")
+})
+Xsimulation_uninformative <- Xsimulation_constant
+Xsimulation_uninformative[1,1] <- 0.51
+set.seed(202118) # Not all seeds will be uninformative
+f1x <- gradientForest(data.frame(Ysimulation,Xsimulation_uninformative), preds, specs, ntree=10)
+  expect_equal(cumimp(f1x, "A"), list(x=0, y= 0))
+
 test_that("uninformative predictors don't break GF", {
   expect_snapshot_value(f1x, "serialize")
   expect_snapshot_output(print(f1x))
